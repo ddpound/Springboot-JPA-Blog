@@ -28,7 +28,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스, auto_increament
 	
-	@Column(nullable = false , length = 30)
+	@Column(nullable = false , length = 30, unique = true)
 	private String username;
 	
 	@Column(nullable = false , length = 100)
