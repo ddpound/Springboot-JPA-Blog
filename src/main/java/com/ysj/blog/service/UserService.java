@@ -1,9 +1,9 @@
 package com.ysj.blog.service;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ysj.blog.model.User;
 import com.ysj.blog.repository.UserRepository;
@@ -17,15 +17,15 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Transactional  // 전체가 성공하면 커밋 , 실패하면 롤백
+	@Transactional// 전체가 성공하면 커밋 , 실패하면 롤백
 	public void saveUser(User user) {
 			userRepository.save(user);
 			
 		} 
 	
-	@Transactional  // 전체가 성공하면 커밋 , 실패하면 롤백
-	public void loginUser(User user) {
-			userRepository.save(user);
+	@Transactional(readOnly = true) // 전체가 성공하면 커밋 , 실패하면 롤백, select할때 트랜잭션 시작, 서비스종료시에 트랜잭션 종료(정합성)
+	public User loginUser(User user) {
+			return userRepository.findByUsernameAndPassword(user.getUsername() , user.getPassword());
 			
 		} 
 	

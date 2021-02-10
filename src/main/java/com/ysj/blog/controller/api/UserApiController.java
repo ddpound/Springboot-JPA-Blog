@@ -1,5 +1,7 @@
 package com.ysj.blog.controller.api;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +30,17 @@ public class UserApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트로 리턴할때 json으로 리턴해준다
 	}
 	
-	@PostMapping("/blog/api/user/login")
-	public ResponseDto<Integer> login(@RequestBody User user){
+	@PostMapping("/api/user/login")
+	public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){
 		System.out.println("login 호출완료");
 		
 		User principal = userService.loginUser(user); // 접근 주체 라는 용어(principal)
+		
+		if(principal != null) {
+			session.setAttribute("principal", principal);
+		}
+		
+		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	

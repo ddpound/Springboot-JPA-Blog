@@ -21,11 +21,9 @@
 				class="form-check-input" type="checkbox"> Remember me
 			</label>
 		</div>
-
-
 	</form>
 	
-	<button id="btn-login" class="btn btn-primary">로그인완료</button>
+	<button id="btn-login" class="btn btn-primary">로그인</button>
 
 </div>
 
