@@ -28,9 +28,16 @@ public class BoardController {
 	
 	@GetMapping("/board/{id}")
 	public String findById(@PathVariable int id, Model model) {
-		model.addAttribute("board",boardservie.boardLook(id));
+		model.addAttribute("board",boardservie.boardDetailLook(id));
 		return "board/detail";
 	}
+	
+	@GetMapping("board/{id}/updateForm")
+	public String updateForm(@PathVariable int id, Model model) {
+		model.addAttribute("board",boardservie.boardDetailLook(id));
+		return "board/updateForm";
+	}
+	
 	
 
 	@GetMapping("/board/saveForm")
