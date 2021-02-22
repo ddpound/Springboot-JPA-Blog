@@ -3,6 +3,10 @@ let index = {
 		$("#btn-save").on("click", () => { // function(){} , => {} this를 바인딩 하기위해서 
 			this.save();
 		});
+		$("#btn-update").on("click", () => { // function(){} , => {} this를 바인딩 하기위해서 
+			this.update();
+		});
+		
 	},
 
 	save: function() {
@@ -26,6 +30,31 @@ let index = {
 			dataType: "json" // 요청을 서버로 해서 응답이 왔을 때, 모든것이 버퍼여서 문자열로 온다(생긴게 json이라면) => 자바스크립트 오브젝트로 변경 
 		}).done(function(resp) {
 			alert("회원가입이 완료되었습니다.");
+			location.href = "/";
+			//
+		}).fail(function(error) {
+			alert(JSON.stringify(error));
+			//
+		});
+
+	},
+	
+		update: function() {
+		//alert("user의 save함수 호출됨");
+		let data = {
+			id: $("#id").val(),
+			password: $("#password").val(),
+			email: $("#email").val()
+		};
+
+		$.ajax({
+			type: "PUT",
+			url: "/user",
+			data: JSON.stringify(data), // 자바스크립트라서 잘모른다 JSON으로 변환해줘야 한다
+			contentType: "application/json; charset=utf-8", //body데이터가 어떤 타입인지
+			dataType: "json" // 요청을 서버로 해서 응답이 왔을 때, 모든것이 버퍼여서 문자열로 온다(생긴게 json이라면) => 자바스크립트 오브젝트로 변경 
+		}).done(function(resp) {
+			alert("회원수정이 완료되었습니다.");
 			location.href = "/";
 			//
 		}).fail(function(error) {

@@ -41,6 +41,7 @@ public class Board {
 	
 	private int count;
 	
+	// 한명의 유저가 여러개의 글을 작성할수 있다
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="userId")
 	private User user;
