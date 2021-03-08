@@ -4,11 +4,18 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ysj.blog.config.auth.PrincipalDetail;
 import com.ysj.blog.dto.ResponseDto;
 import com.ysj.blog.model.RoleType;
 import com.ysj.blog.model.User;
@@ -48,6 +55,25 @@ public class UserApiController {
 //		
 //		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 //	}
+	
+	// key = value, x-www-form-urlencoded 로 받고싶으면 @RequestBody 를 안해도 되고 USER객체만 받아도 스프링에서 알아서 해준다
+	@PutMapping("/user")
+	public ResponseDto<Integer> update(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principal
+			, HttpSession session){  // json데이터로 받고싶으면 리퀘스트바디가 필요
+		userService.userUpdate(user);
+		// 여기서는 트랜잭션이 종료되기 때문에 DB값은 변경이 됐음
+		
+		
+		// 하지만 세션값은 변경되지 않은 상태이기 때문에 우리가 직접 세션값을 변경해줄 것임
+		Authentication authentiction =
+				new UsernamePasswordAuthenticationToken(principal, null , principal.getAuthorities());
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(authentiction); // 강제로 세션값 변경
+		session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+		
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); 
+	}
+	
 	
 	
 }
