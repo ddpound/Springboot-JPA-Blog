@@ -1,6 +1,10 @@
 package com.ysj.blog.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,9 @@ public class UserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@Transactional // 전체가 성공하면 커밋 , 실패하면 롤백
 	public void saveUser(User user) {
@@ -30,6 +37,7 @@ public class UserService {
 
 	}
 	
+	//회원가입 수정 , 트랜잭션이 종료 안되고 난다음에 실행시 변경안됨
 	@Transactional
 	public void userUpdate(User user) {
 		// 수정시에는 JPA 영속성 컨텍스트 User 오브젝트를 영속화 시키고, 영속화된 USER 오브젝트를 수정
@@ -43,6 +51,8 @@ public class UserService {
 		String encPassword = encoder.encode(rawPassword);
 		persistance.setPassword(encPassword);
 		persistance.setEmail(user.getEmail());
+
+		
 		// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = 커밋 = 더티체킹
 		// 영속화된 persistance 객체의 변화가 감지되면 더티체킹해서 알아서 업데이트를 안해도 업뎃을 해준다
 		
