@@ -24,8 +24,7 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
-	@Autowired
-	private AuthenticationManager authenticationManager;
+
 
 	@Transactional // 전체가 성공하면 커밋 , 실패하면 롤백
 	public void saveUser(User user) {
