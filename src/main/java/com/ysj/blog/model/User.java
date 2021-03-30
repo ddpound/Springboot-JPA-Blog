@@ -28,7 +28,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스, auto_increament
 	
-	@Column(nullable = false , length = 30, unique = true)
+	@Column(nullable = false , length = 100, unique = true)
 	private String username;
 	
 	@Column(nullable = false , length = 100)
@@ -39,6 +39,9 @@ public class User {
 	
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
+	
+	
+	private String oauth; //카카오 로그인시 카카오 , 구글이면 구글로 
 	
 	@CreationTimestamp
 	private Timestamp createDate;

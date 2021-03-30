@@ -25,6 +25,15 @@ public class UserService {
 	private BCryptPasswordEncoder encoder;
 	
 
+	@Transactional(readOnly = true)
+	public User findUser(String username) {
+		User user = userRepository.findByUsername(username).orElseGet(()->{
+			return new User();
+		});
+		return user;
+	}
+	
+	
 
 	@Transactional // 전체가 성공하면 커밋 , 실패하면 롤백
 	public void saveUser(User user) {
@@ -46,16 +55,24 @@ public class UserService {
 			return new IllegalArgumentException("회원찾기 실패");
 		});
 		
-		String rawPassword = user.getPassword();
-		String encPassword = encoder.encode(rawPassword);
-		persistance.setPassword(encPassword);
-		persistance.setEmail(user.getEmail());
+		// Validate 체크 => oauth이 없으면 수정가능
+		if(persistance.getOauth() ==null || persistance.getOauth().equals("")) {
+			String rawPassword = user.getPassword();
+			String encPassword = encoder.encode(rawPassword);
+			persistance.setPassword(encPassword);
+			persistance.setEmail(user.getEmail());
+		}
+		
+		//까먹지 마세요 절대 yml 파일은 업데이트하는게 아닙니다
+		
 
 		
 		// 회원수정 함수 종료시 = 서비스 종료 = 트랜잭션 종료 = 커밋 = 더티체킹
 		// 영속화된 persistance 객체의 변화가 감지되면 더티체킹해서 알아서 업데이트를 안해도 업뎃을 해준다
 		
 	}
+
+	
 
 //	@Transactional(readOnly = true) // 전체가 성공하면 커밋 , 실패하면 롤백, select할때 트랜잭션 시작, 서비스종료시에 트랜잭션 종료(정합성)
 //	public User loginUser(User user) {

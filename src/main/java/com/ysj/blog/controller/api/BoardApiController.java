@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ysj.blog.config.auth.PrincipalDetail;
+import com.ysj.blog.dto.ReplySaveRequestDto;
 import com.ysj.blog.dto.ResponseDto;
 import com.ysj.blog.model.Board;
+import com.ysj.blog.model.Reply;
 import com.ysj.blog.model.User;
 import com.ysj.blog.service.BoardService;
 
 
 @RestController
 public class BoardApiController {
+	
+	
+	
 	
 	@Autowired
 	private BoardService boardService;
@@ -42,6 +47,18 @@ public class BoardApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
+	// 데이터를 받을 때 컨트롤러에서 dto를 만들어서 받는게 좋다
+	// dto 사용하지 않은 이유는, 너무 많은 데이터를 주고받아버리면 엄청난 용량 처리때문에 DTO를 따로 둬서 만든다
+	@PostMapping("/api/board/{boardId}/reply")
+	public ResponseDto<Integer> replysave(@RequestBody ReplySaveRequestDto replySaveRequestDto) { 
+		boardService.saveReply(replySaveRequestDto);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
 	
+	@DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+	public ResponseDto<Integer> replyDelete(@PathVariable int replyId){
+		boardService.deleteReply(replyId);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
 	
 }

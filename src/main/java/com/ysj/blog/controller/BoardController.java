@@ -26,9 +26,12 @@ public class BoardController {
 		return "index";  //viewResolver 작동 
 	}
 	
+	// 즉 보드 모델 들어가보면 연관관계의 주인이 아닌 reply가 데이터베이스에는 없지만 셀렉트할때는 
+	// 담아오기때문에 board를 반환받아도 reply를 가지고있는상태로 받아온다
 	@GetMapping("/board/{id}")
 	public String findById(@PathVariable int id, Model model) {
 		model.addAttribute("board",boardservie.boardDetailLook(id));
+		
 		return "board/detail";
 	}
 	

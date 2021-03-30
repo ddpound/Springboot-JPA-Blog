@@ -29,7 +29,12 @@ let index = {
 			contentType: "application/json; charset=utf-8", //body데이터가 어떤 타입인지
 			dataType: "json" // 요청을 서버로 해서 응답이 왔을 때, 모든것이 버퍼여서 문자열로 온다(생긴게 json이라면) => 자바스크립트 오브젝트로 변경 
 		}).done(function(resp) {
-			alert("회원가입이 완료되었습니다.");
+			if(resp.status ===500){
+				alert("회원가입이 실패하였습니다, 이미 등록된 회원입니다");
+			}else{
+				alert("회원가입이 완료되었습니다.");
+			}
+			
 			location.href = "/";
 			//
 		}).fail(function(error) {

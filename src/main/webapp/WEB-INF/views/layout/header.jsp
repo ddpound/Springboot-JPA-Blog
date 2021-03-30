@@ -33,7 +33,6 @@
 
 </head>
 <body>
-
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="/">홈</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -50,10 +49,7 @@
 						<li class="nav-item"><a class="nav-link"
 							href="/auth/joinForm">회원가입</a></li>
 					</ul>
-
 				</c:when>
-
-
 				<c:otherwise>
 					<ul class="navbar-nav">
 						<li class="nav-item"><a class="nav-link"
